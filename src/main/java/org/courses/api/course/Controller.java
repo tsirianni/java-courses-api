@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
 import org.courses.api.course.dto.CreateCourseDTO;
 import org.courses.api.course.dto.DeleteCourseDTO;
+import org.courses.api.course.dto.ToggleCourseStateDTO;
 import org.courses.api.exceptions.ErrorTypes;
 import org.courses.api.exceptions.NotFound;
 import org.courses.api.exceptions.dto.UnprocessableEntityDTO;
@@ -36,6 +37,16 @@ public class Controller {
         try {
             this.service.deleteCourse(UUID.fromString(data.id()));
             return ResponseEntity.noContent().build();
+        } catch (NotFound ex) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PatchMapping("/{id}/active")
+    public ResponseEntity<Object> toggleCourseState(@Valid @PathParam("id") ToggleCourseStateDTO data) {
+        try {
+            var course = this.service.toggleCourseState(data);
+            return ResponseEntity.ok().body(course);
         } catch (NotFound ex) {
             return ResponseEntity.notFound().build();
         }
