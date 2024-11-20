@@ -1,12 +1,10 @@
 package org.courses.api.course;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Data;
+import org.courses.api.course.category.CourseCategoryEntity;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -24,7 +22,11 @@ public class CourseEntity {
     private UUID id;
 
     private String name;
-    private short courseCategoryId;
+
+    @ManyToOne
+    @JoinColumn(name = "course_category_id")
+    private CourseCategoryEntity courseCategory;
+
     private boolean active;
 
     @CreationTimestamp

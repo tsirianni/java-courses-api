@@ -19,11 +19,11 @@ public class CourseService {
 
     public CourseEntity createCourse(CreateCourseDTO data) {
         // Validate category
-        this.courseCategoryRepository.findById(data.category()).orElseThrow(() -> new IllegalArgumentException("Invalid category id"));
+        var category = this.courseCategoryRepository.findById(data.category()).orElseThrow(() -> new IllegalArgumentException("Invalid category id"));
 
 
         var newCourse = new CourseEntity();
-        newCourse.setCourseCategoryId(data.category());
+        newCourse.setCourseCategory(category);
         newCourse.setName(data.name());
         newCourse.setActive(true);
 
