@@ -2,8 +2,11 @@ package org.courses.api.course;
 
 import org.courses.api.course.category.CourseCategoryRepository;
 import org.courses.api.course.dto.CreateCourseDTO;
+import org.courses.api.exceptions.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class CourseService {
@@ -24,5 +27,10 @@ public class CourseService {
         newCourse.setActive(true);
 
         return this.repository.save(newCourse);
+    }
+
+    public void deleteCourse(UUID courseId) {
+        this.repository.findById(courseId).orElseThrow(() -> new NotFound("No course has been found with the provided ID"));
+        this.repository.deleteById(courseId);
     }
 }
