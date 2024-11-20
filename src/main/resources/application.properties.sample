@@ -1,1 +1,11 @@
 spring.application.name=api
+#-- Database Config --#
+spring.datasource.url=jdbc:postgresql://localhost:5432/courses
+spring.datasource.username=your-user
+spring.datasource.password=your-password
+
+#-- Flyway Config --#
+spring.flyway.enabled=true
+spring.flyway.url=jdbc:postgresql://localhost:5432/courses
+spring.flyway.user=your-user
+spring.flyway.password=your-password
