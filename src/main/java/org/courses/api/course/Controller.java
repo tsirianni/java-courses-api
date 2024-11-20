@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
 import org.courses.api.course.dto.CreateCourseDTO;
 import org.courses.api.course.dto.DeleteCourseDTO;
+import org.courses.api.course.dto.FindAllCoursesDTO;
 import org.courses.api.course.dto.ToggleCourseStateDTO;
 import org.courses.api.exceptions.ErrorTypes;
 import org.courses.api.exceptions.NotFound;
@@ -12,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -50,5 +54,16 @@ public class Controller {
         } catch (NotFound ex) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Object>> findAllCourses(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Short courseCategoryId
+    ) {
+        var dto = new FindAllCoursesDTO(Optional.ofNullable(name), Optional.ofNullable(courseCategoryId));
+
+        var courses = this.service.findAllCourses(dto);
+        return ResponseEntity.ok().body(Arrays.asList(courses.toArray()));
     }
 }
