@@ -9,3 +9,6 @@ spring.flyway.enabled=true
 spring.flyway.url=jdbc:postgresql://localhost:5432/courses
 spring.flyway.user=your-user
 spring.flyway.password=your-password
+
+#-- Hibernate Config --#
+spring.jpa.hibernate.ddl-auto=none
