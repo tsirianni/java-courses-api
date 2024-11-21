@@ -38,7 +38,7 @@ public class CourseService {
     public CourseEntity toggleCourseState(UUID courseId) {
         var course = this.repository.findById(courseId).orElseThrow(
                 () -> new NotFound("No course has been found with the provided ID"));
-        
+
         course.setActive(!course.isActive());
         return this.repository.save(course);
     }
@@ -55,5 +55,23 @@ public class CourseService {
         }
 
         return this.repository.findAll();
+    }
+
+    public CourseEntity updateCourse(UUID courseId, UpdateCourseDTO data) {
+        var course = this.repository.findById(courseId).orElseThrow(
+                () -> new NotFound("No course has been found with the provided ID"));
+
+        boolean shouldUpdateName = data.name().isPresent();
+        boolean shouldUpdateCategory = data.category().isPresent();
+
+        if (shouldUpdateName)
+            course.setName(data.name().get());
+        if (shouldUpdateCategory) {
+            var category = this.courseCategoryRepository.findById(data.category().get()).orElseThrow(() -> new IllegalArgumentException(
+                    "Invalid category id"));
+            course.setCourseCategory(category);
+        }
+
+        return this.repository.save(course);
     }
 }

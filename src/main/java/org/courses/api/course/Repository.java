@@ -11,7 +11,6 @@ public interface Repository extends JpaRepository<CourseEntity, UUID> {
 
     @Query("SELECT c FROM course c WHERE (:name IS NULL OR c.name ILIKE %:name%) " +
             "AND (:courseCategoryId IS NULL OR c.courseCategory.id = :courseCategoryId)")
-        // TODO Pagination
     List<CourseEntity> findAllWithFilters(
             @Param("name") String name,
             @Param("courseCategoryId") Short courseCategoryId

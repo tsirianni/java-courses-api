@@ -63,4 +63,17 @@ public class Controller {
         var courses = this.service.findAllCourses(dto);
         return ResponseEntity.ok().body(Arrays.asList(courses.toArray()));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateCourse(@Valid @PathParam("id") UUIDDTO uuidDTO, @Valid @RequestBody UpdateCourseDTO data) {
+        try {
+            var course = this.service.updateCourse(UUID.fromString(uuidDTO.id()), data);
+            return ResponseEntity.ok().body(course);
+        } catch (NotFound ex) {
+            return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.unprocessableEntity().body(
+                    new UnprocessableEntityDTO(e.getMessage(), ErrorTypes.INVALID_CATEGORY.getErrorMessage()));
+        }
+    }
 }
