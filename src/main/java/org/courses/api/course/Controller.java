@@ -2,10 +2,7 @@ package org.courses.api.course;
 
 import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
-import org.courses.api.course.dto.CreateCourseDTO;
-import org.courses.api.course.dto.DeleteCourseDTO;
-import org.courses.api.course.dto.FindAllCoursesDTO;
-import org.courses.api.course.dto.ToggleCourseStateDTO;
+import org.courses.api.course.dto.*;
 import org.courses.api.exceptions.ErrorTypes;
 import org.courses.api.exceptions.NotFound;
 import org.courses.api.exceptions.dto.UnprocessableEntityDTO;
@@ -37,7 +34,7 @@ public class Controller {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete(@Valid @PathParam("id") DeleteCourseDTO data) {
+    public ResponseEntity<Object> delete(@Valid @PathParam("id") UUIDDTO data) {
         try {
             this.service.deleteCourse(UUID.fromString(data.id()));
             return ResponseEntity.noContent().build();
@@ -47,9 +44,9 @@ public class Controller {
     }
 
     @PatchMapping("/{id}/active")
-    public ResponseEntity<Object> toggleCourseState(@Valid @PathParam("id") ToggleCourseStateDTO data) {
+    public ResponseEntity<Object> toggleCourseState(@Valid @PathParam("id") UUIDDTO data) {
         try {
-            var course = this.service.toggleCourseState(data);
+            var course = this.service.toggleCourseState(UUID.fromString(data.id()));
             return ResponseEntity.ok().body(course);
         } catch (NotFound ex) {
             return ResponseEntity.notFound().build();

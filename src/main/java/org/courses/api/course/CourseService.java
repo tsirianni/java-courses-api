@@ -1,9 +1,7 @@
 package org.courses.api.course;
 
 import org.courses.api.course.category.CourseCategoryRepository;
-import org.courses.api.course.dto.CreateCourseDTO;
-import org.courses.api.course.dto.FindAllCoursesDTO;
-import org.courses.api.course.dto.ToggleCourseStateDTO;
+import org.courses.api.course.dto.*;
 import org.courses.api.exceptions.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,11 +35,10 @@ public class CourseService {
         this.repository.deleteById(courseId);
     }
 
-    public CourseEntity toggleCourseState(ToggleCourseStateDTO data) {
-        var course = this.repository.findById(UUID.fromString(data.id())).orElseThrow(
+    public CourseEntity toggleCourseState(UUID courseId) {
+        var course = this.repository.findById(courseId).orElseThrow(
                 () -> new NotFound("No course has been found with the provided ID"));
-
-
+        
         course.setActive(!course.isActive());
         return this.repository.save(course);
     }
